@@ -203,15 +203,67 @@ public class Main {
     }
 
     public static int biggestDailySwing(int month) {
-        return 1234;
+        if (month < 0 || month > 11) {
+            return -99999;
+        }
+        int maxSwing = 0;
+
+        for (int day = 1; day < 28; day++) {
+            int today = totalProfitOnDay(month, day);
+            int nextDay = totalProfitOnDay(month, day + 1);
+            int currentSwing = Math.abs(today - nextDay);
+
+            if (currentSwing > maxSwing) {
+                maxSwing = currentSwing;
+            }
+        }
+
+        return maxSwing;
     }
 
     public static String compareTwoCommodities(String c1, String c2) {
-        return "DUMMY is better by 1234";
+        int commodityIndex1 = getCommodityIndex(c1);
+        int commodityIndex2 = getCommodityIndex(c2);
+        if (commodityIndex1 == -1 || commodityIndex2 == -1) {
+            return "INVALID_COMMODITY";
+        }
+        int totalC1 = 0;
+        int totalC2 = 0;
+
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].getCommodityIndex() == commodityIndex1) {
+                totalC1 += allData[i].getProfit();
+            }
+            if (allData[i].getCommodityIndex() == commodityIndex2) {
+                totalC2 += allData[i].getProfit();
+            }
+        }
+        if (totalC1 > totalC2) {
+            return "C1 is better by" + " " + Math.abs(totalC1 - totalC2);
+        }
+        if (totalC1 < totalC2) {
+            return "C2 is better by" + " " + Math.abs(totalC1 - totalC2);
+        } else {
+            return "Equal";
+        }
     }
 
     public static String bestWeekOfMonth(int month) {
-        return "DUMMY";
+        if (month < 0 || month > 11) {
+            return "INVALID_MONTH";
+        }
+        int[] weeklyTotals = new int[4];
+        for (int day = 1; day < 29; day++) {
+            int weekIndex = (day - 1) / 7;
+            weeklyTotals[weekIndex] += totalProfitOnDay(month, day);
+        }
+        int maxWeekIndex = 0;
+        for (int i = 1; i < 4; i++) {
+            if (weeklyTotals[i] > weeklyTotals[maxWeekIndex]) {
+                maxWeekIndex = i;
+            }
+        }
+        return "Week" + " " + (maxWeekIndex + 1);
     }
 
     public static void main(String[] args) {
