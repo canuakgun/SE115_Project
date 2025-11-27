@@ -118,19 +118,88 @@ public class Main {
     }
 
     public static int bestDayOfMonth(int month) {
-        return 1234;
+        if (month < 0 || month > 11) {
+            return -1;
+        }
+        int[] dailyTotals = new int[28];
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].getMonth() == month) {
+                int day = allData[i].getDay();
+                dailyTotals[day - 1] += allData[i].getProfit();
+            }
+        }
+        int maxDay = 1;
+        for (int i = 1; i < 28; i++) {
+            if (dailyTotals[i] > dailyTotals[maxDay - 1]) {
+                maxDay = i + 1;
+            }
+        }
+
+        return maxDay;
     }
 
     public static String bestMonthForCommodity(String comm) {
-        return "DUMMY";
+        int commodityIndex = getCommodityIndex(comm);
+        if (commodityIndex == -1) {
+            return "INVALID_COMMODITY";
+        }
+        int[] monthlyTotals = new int[12];
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].getCommodityIndex() == commodityIndex) {
+                int month = allData[i].getMonth();
+                monthlyTotals[month] += allData[i].getProfit();
+            }
+        }
+
+        int maxMonthIndex = 0;
+        for (int i = 0; i < 12; i++) {
+            if (monthlyTotals[i] > monthlyTotals[maxMonthIndex]) {
+                maxMonthIndex = i;
+            }
+        }
+
+        return months[maxMonthIndex];
     }
 
     public static int consecutiveLossDays(String comm) {
-        return 1234;
+        int commodityIndex = getCommodityIndex(comm);
+        if (commodityIndex == -1) {
+            return -1;
+        }
+        int currentStreak = 0;
+        int maxStreak = 0;
+
+        for (int month = 0; month < 12; month++) {
+            for (int day = 1; day <= 28; day++) {
+                int profit = getProfitForDayAndCommodity(month, day, commodityIndex);
+
+                if (profit < 0) {
+                    currentStreak++;
+                    if (currentStreak > maxStreak) {
+                        maxStreak = currentStreak;
+                    }
+                } else {
+                    currentStreak = 0;
+                }
+            }
+        }
+        return maxStreak;
     }
 
     public static int daysAboveThreshold(String comm, int threshold) {
-        return 1234;
+        int count = 0;
+        int commodityIndex = getCommodityIndex(comm);
+        if (commodityIndex == -1) {
+            return -1;
+        }
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].getCommodityIndex() == commodityIndex) {
+                if (allData[i].getProfit() > threshold) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public static int biggestDailySwing(int month) {
