@@ -66,15 +66,55 @@ public class Main {
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
     public static String mostProfitableCommodityInMonth(int month) {
-        return "DUMMY";
+        if (month < 0 || month > 11) {
+            return "INVALID_MONTH";
+        }
+
+        int[] sumArr = new int[5]; // GOld, Oil, Silver ,Wheat , Copper
+        int max = Integer.MIN_VALUE;
+        int maxIndex = -1;
+
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].getMonth() == month) {
+                sumArr[allData[i].getCommodityIndex()] += allData[i].getProfit();
+            }
+        }
+        for (int i = 0; i < sumArr.length; i++) {
+            if (sumArr[i] > max) {
+                max = sumArr[i];
+                maxIndex = i;
+            }
+        }
+        return commodities[maxIndex] + " " + max;
     }
 
     public static int totalProfitOnDay(int month, int day) {
-        return 1234;
+        if (month < 0 || month > 11 || day < 1 || day > 28) {
+            return -99999;
+        }
+        int totalProfit = 0;
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].getMonth() == month && allData[i].getDay() == day) {
+                totalProfit += allData[i].getProfit();
+            }
+        }
+
+        return totalProfit;
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
-        return 1234;
+        int totalProfit = 0;
+        int commodityIndex = getCommodityIndex(commodity);
+        if (commodityIndex == -1 || from > to || from < 1 || from > 28 || to < 1 || to > 28) {
+            return -99999;
+        }
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].getCommodityIndex() == commodityIndex && allData[i].getDay() >= from
+                    && allData[i].getDay() <= to) {
+                totalProfit += allData[i].getProfit();
+            }
+        }
+        return totalProfit;
     }
 
     public static int bestDayOfMonth(int month) {
