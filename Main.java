@@ -14,7 +14,7 @@ public class Main {
     // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
     static Data[] allData = new Data[1680]; // 12 months * 28 days * 5 commodity
 
-    static int getCommodityIndex(String name) {
+    public static int getCommodityIndex(String name) {
         for (int i = 0; i < commodities.length; i++) {
             if (commodities[i].equals(name)) {
                 return i;
@@ -23,7 +23,7 @@ public class Main {
         return -1;
     }
 
-    static int getProfitForDayAndCommodity(int month, int day, int commodityIndex) {
+    public static int getProfitForDayAndCommodity(int month, int day, int commodityIndex) {
 
         for (int i = 0; i < allData.length; i++) {
             if (allData[i].getMonth() == month && allData[i].getDay() == day
