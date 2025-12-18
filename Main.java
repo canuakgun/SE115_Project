@@ -252,8 +252,7 @@ public class Main {
         }
         if (totalC1 > totalC2) {
             return "C1 is better by" + " " + Math.abs(totalC1 - totalC2);
-        }
-        if (totalC1 < totalC2) {
+        } else if (totalC1 < totalC2) {
             return "C2 is better by" + " " + Math.abs(totalC1 - totalC2);
         } else {
             return "Equal";
@@ -265,12 +264,12 @@ public class Main {
             return "INVALID_MONTH";
         }
         int[] weeklyTotals = new int[4];
-        for (int day = 1; day < 29; day++) {
+        for (int day = 1; day <= 28; day++) {
             int weekIndex = (day - 1) / 7;
             weeklyTotals[weekIndex] += totalProfitOnDay(month, day);
         }
         int maxWeekIndex = 0;
-        for (int i = 1; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (weeklyTotals[i] > weeklyTotals[maxWeekIndex]) {
                 maxWeekIndex = i;
             }
