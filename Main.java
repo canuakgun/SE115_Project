@@ -2,6 +2,7 @@
 // Main.java — Students version
 import java.io.*;
 import java.util.*;
+import java.nio.file.Paths;
 
 public class Main {
     static final int MONTHS = 12;
@@ -14,7 +15,7 @@ public class Main {
     // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
     static Data[] allData = new Data[1680]; // 12 months * 28 days * 5 commodity
 
-    static int getCommodityIndex(String name) {
+    public static int getCommodityIndex(String name) {
         for (int i = 0; i < commodities.length; i++) {
             if (commodities[i].equals(name)) {
                 return i;
@@ -23,7 +24,7 @@ public class Main {
         return -1;
     }
 
-    static int getProfitForDayAndCommodity(int month, int day, int commodityIndex) {
+    public static int getProfitForDayAndCommodity(int month, int day, int commodityIndex) {
 
         for (int i = 0; i < allData.length; i++) {
             if (allData[i].getMonth() == month && allData[i].getDay() == day
@@ -38,14 +39,20 @@ public class Main {
         String[] monthFiles = { "January.txt", "February.txt", "March.txt", "April.txt", "May.txt", "June.txt",
                 "July.txt", "August.txt", "September.txt", "October.txt", "November.txt", "December.txt" };
         int arrayIndex = 0;
-        try {
-            for (int month = 0; month < 12; month++) {
-                BufferedReader reader = new BufferedReader(
-                        new FileReader("Data_Files/" + monthFiles[month]));
 
-                String line = reader.readLine();
+        for (int month = 0; month < 12; month++) {
+            Scanner reader = null;
+            try {
+                reader = new Scanner(Paths.get("Data_Files/" + monthFiles[month]));
 
-                while ((line = reader.readLine()) != null) {
+                // İlk satırı atla (başlık satırı)
+                if (reader.hasNextLine()) {
+                    reader.nextLine();
+                }
+
+                // Dosyayı satır satır oku
+                while (reader.hasNextLine()) {
+                    String line = reader.nextLine();
                     String[] parts = line.split(",");
 
                     int day = Integer.parseInt(parts[0]);
@@ -56,10 +63,15 @@ public class Main {
                     arrayIndex++;
                 }
 
-                reader.close();
+            } catch (IOException e) {
+                System.err.println("Dosya okuma hatası: " + monthFiles[month]);
+            } catch (NumberFormatException e) {
+                System.err.println("Sayı formatı hatası");
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
             }
-        } catch (Exception e) {
-
         }
     }
 
@@ -70,7 +82,7 @@ public class Main {
             return "INVALID_MONTH";
         }
 
-        int[] sumArr = new int[5]; // GOld, Oil, Silver ,Wheat , Copper
+        int[] sumArr = new int[5]; // Gold, Oil, Silver ,Wheat , Copper
         int max = Integer.MIN_VALUE;
         int maxIndex = -1;
 
@@ -268,6 +280,6 @@ public class Main {
 
     public static void main(String[] args) {
         loadData();
-        System.out.println("Data loaded – ready for queries");
+        System.out.println("Data loaded- ready for queries");
     }
 }
