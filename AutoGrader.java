@@ -15,16 +15,16 @@ public class AutoGrader {
     // When students implement the functions, the tests with dummy values of course
     // will fail.
     static final Object[][] TESTS = {
-            { "mostProfitableCommodityInMonth", new Object[] { 0 }, "DUMMY" },
-            { "totalProfitOnDay", new Object[] { 0, 15 }, 1234 },
-            { "commodityProfitInRange", new Object[] { "Gold", 1, 14 }, 1234 },
-            { "bestDayOfMonth", new Object[] { 0 }, 1234 },
-            { "bestMonthForCommodity", new Object[] { "Gold" }, "DUMMY" },
-            { "consecutiveLossDays", new Object[] { "Gold" }, 1234 },
-            { "daysAboveThreshold", new Object[] { "Gold", 2000 }, 1234 },
-            { "biggestDailySwing", new Object[] { 0 }, 1234 },
-            { "compareTwoCommodities", new Object[] { "Gold", "Oil" }, "DUMMY is better by 1234" },
-            { "bestWeekOfMonth", new Object[] { 20 }, "DUMMY" },
+            { "mostProfitableCommodityInMonth", new Object[] { 0 }, "Gold 71791" },
+            { "totalProfitOnDay", new Object[] { 0, 15 }, 7202 },
+            { "commodityProfitInRange", new Object[] { "Gold", 1, 14 }, 424199 },
+            { "bestDayOfMonth", new Object[] { 0 }, 26 },
+            { "bestMonthForCommodity", new Object[] { "Gold" }, "December" },
+            { "consecutiveLossDays", new Object[] { "Gold" }, 4 },
+            { "daysAboveThreshold", new Object[] { "Gold", 2000 }, 203 },
+            { "biggestDailySwing", new Object[] { 0 }, 17223 },
+            { "compareTwoCommodities", new Object[] { "Gold", "Oil" }, "C1 is better by 762309" },
+            { "bestWeekOfMonth", new Object[] { 20 }, "INVALID_MONTH" },
     };
 
     public static void main(String[] args) throws Exception {

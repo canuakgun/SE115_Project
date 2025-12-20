@@ -1,5 +1,5 @@
 
-// Main.java — Students version
+// Main.java – Students version
 import java.io.*;
 import java.util.*;
 import java.nio.file.Paths;
@@ -12,8 +12,11 @@ public class Main {
     static String[] months = { "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December" };
 
-    // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
-    static Data[] allData = new Data[1680]; // 12 months * 28 days * 5 commodity
+    // Data arrays - 1680 entries (12 months * 28 days * 5 commodities)
+    static int[] dataMonth = new int[1680];
+    static int[] dataDay = new int[1680];
+    static int[] dataCommodityIndex = new int[1680];
+    static int[] dataProfit = new int[1680];
 
     public static int getCommodityIndex(String name) {
         for (int i = 0; i < commodities.length; i++) {
@@ -25,11 +28,9 @@ public class Main {
     }
 
     public static int getProfitForDayAndCommodity(int month, int day, int commodityIndex) {
-
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getMonth() == month && allData[i].getDay() == day
-                    && allData[i].getCommodityIndex() == commodityIndex) {
-                return allData[i].getProfit();
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataMonth[i] == month && dataDay[i] == day && dataCommodityIndex[i] == commodityIndex) {
+                return dataProfit[i];
             }
         }
         return 0;
@@ -59,7 +60,10 @@ public class Main {
                     int commodityIndex = getCommodityIndex(parts[1]);
                     int profit = Integer.parseInt(parts[2]);
 
-                    allData[arrayIndex] = new Data(month, day, commodityIndex, profit);
+                    dataMonth[arrayIndex] = month;
+                    dataDay[arrayIndex] = day;
+                    dataCommodityIndex[arrayIndex] = commodityIndex;
+                    dataProfit[arrayIndex] = profit;
                     arrayIndex++;
                 }
 
@@ -75,20 +79,20 @@ public class Main {
         }
     }
 
-    // ======== 10 REQUIRED METHODS (Students fill these) ========
+    // ======== 10 REQUIRED METHODS ========
 
     public static String mostProfitableCommodityInMonth(int month) {
         if (month < 0 || month > 11) {
             return "INVALID_MONTH";
         }
 
-        int[] sumArr = new int[5]; // Gold, Oil, Silver ,Wheat , Copper
+        int[] sumArr = new int[5];
         int max = Integer.MIN_VALUE;
         int maxIndex = -1;
 
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getMonth() == month) {
-                sumArr[allData[i].getCommodityIndex()] += allData[i].getProfit();
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataMonth[i] == month) {
+                sumArr[dataCommodityIndex[i]] += dataProfit[i];
             }
         }
         for (int i = 0; i < sumArr.length; i++) {
@@ -105,12 +109,11 @@ public class Main {
             return -99999;
         }
         int totalProfit = 0;
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getMonth() == month && allData[i].getDay() == day) {
-                totalProfit += allData[i].getProfit();
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataMonth[i] == month && dataDay[i] == day) {
+                totalProfit += dataProfit[i];
             }
         }
-
         return totalProfit;
     }
 
@@ -120,10 +123,9 @@ public class Main {
         if (commodityIndex == -1 || from > to || from < 1 || from > 28 || to < 1 || to > 28) {
             return -99999;
         }
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getCommodityIndex() == commodityIndex && allData[i].getDay() >= from
-                    && allData[i].getDay() <= to) {
-                totalProfit += allData[i].getProfit();
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataCommodityIndex[i] == commodityIndex && dataDay[i] >= from && dataDay[i] <= to) {
+                totalProfit += dataProfit[i];
             }
         }
         return totalProfit;
@@ -134,10 +136,10 @@ public class Main {
             return -1;
         }
         int[] dailyTotals = new int[28];
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getMonth() == month) {
-                int day = allData[i].getDay();
-                dailyTotals[day - 1] += allData[i].getProfit();
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataMonth[i] == month) {
+                int day = dataDay[i];
+                dailyTotals[day - 1] += dataProfit[i];
             }
         }
         int maxDay = 1;
@@ -146,7 +148,6 @@ public class Main {
                 maxDay = i + 1;
             }
         }
-
         return maxDay;
     }
 
@@ -156,10 +157,10 @@ public class Main {
             return "INVALID_COMMODITY";
         }
         int[] monthlyTotals = new int[12];
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getCommodityIndex() == commodityIndex) {
-                int month = allData[i].getMonth();
-                monthlyTotals[month] += allData[i].getProfit();
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataCommodityIndex[i] == commodityIndex) {
+                int month = dataMonth[i];
+                monthlyTotals[month] += dataProfit[i];
             }
         }
 
@@ -169,7 +170,6 @@ public class Main {
                 maxMonthIndex = i;
             }
         }
-
         return months[maxMonthIndex];
     }
 
@@ -204,9 +204,9 @@ public class Main {
         if (commodityIndex == -1) {
             return -1;
         }
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getCommodityIndex() == commodityIndex) {
-                if (allData[i].getProfit() > threshold) {
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataCommodityIndex[i] == commodityIndex) {
+                if (dataProfit[i] > threshold) {
                     count++;
                 }
             }
@@ -229,7 +229,6 @@ public class Main {
                 maxSwing = currentSwing;
             }
         }
-
         return maxSwing;
     }
 
@@ -242,12 +241,12 @@ public class Main {
         int totalC1 = 0;
         int totalC2 = 0;
 
-        for (int i = 0; i < allData.length; i++) {
-            if (allData[i].getCommodityIndex() == commodityIndex1) {
-                totalC1 += allData[i].getProfit();
+        for (int i = 0; i < dataMonth.length; i++) {
+            if (dataCommodityIndex[i] == commodityIndex1) {
+                totalC1 += dataProfit[i];
             }
-            if (allData[i].getCommodityIndex() == commodityIndex2) {
-                totalC2 += allData[i].getProfit();
+            if (dataCommodityIndex[i] == commodityIndex2) {
+                totalC2 += dataProfit[i];
             }
         }
         if (totalC1 > totalC2) {
