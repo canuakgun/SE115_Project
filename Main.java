@@ -1,5 +1,4 @@
 
-// Main.java – Students version
 import java.io.*;
 import java.util.*;
 import java.nio.file.Paths;
@@ -12,7 +11,6 @@ public class Main {
     static String[] months = { "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December" };
 
-    // Data arrays - 1680 entries (12 months * 28 days * 5 commodities)
     static int[] dataMonth = new int[1680];
     static int[] dataDay = new int[1680];
     static int[] dataCommodityIndex = new int[1680];
@@ -46,12 +44,10 @@ public class Main {
             try {
                 reader = new Scanner(Paths.get("Data_Files/" + monthFiles[month]));
 
-                // İlk satırı atla (başlık satırı)
                 if (reader.hasNextLine()) {
                     reader.nextLine();
                 }
 
-                // Dosyayı satır satır oku
                 while (reader.hasNextLine()) {
                     String line = reader.nextLine();
                     String[] parts = line.split(",");
@@ -68,9 +64,9 @@ public class Main {
                 }
 
             } catch (IOException e) {
-                System.err.println("Dosya okuma hatası: " + monthFiles[month]);
+
             } catch (NumberFormatException e) {
-                System.err.println("Sayı formatı hatası");
+
             } finally {
                 if (reader != null) {
                     reader.close();
@@ -238,8 +234,8 @@ public class Main {
         if (commodityIndex1 == -1 || commodityIndex2 == -1) {
             return "INVALID_COMMODITY";
         }
-        int totalC1 = 0;
-        int totalC2 = 0;
+        long totalC1 = 0;
+        long totalC2 = 0;
 
         for (int i = 0; i < dataMonth.length; i++) {
             if (dataCommodityIndex[i] == commodityIndex1) {
@@ -250,9 +246,9 @@ public class Main {
             }
         }
         if (totalC1 > totalC2) {
-            return "C1 is better by" + " " + Math.abs(totalC1 - totalC2);
+            return "C1 is better by " + Math.abs(totalC1 - totalC2);
         } else if (totalC1 < totalC2) {
-            return "C2 is better by" + " " + Math.abs(totalC1 - totalC2);
+            return "C2 is better by " + Math.abs(totalC1 - totalC2);
         } else {
             return "Equal";
         }
@@ -273,11 +269,11 @@ public class Main {
                 maxWeekIndex = i;
             }
         }
-        return "Week" + " " + (maxWeekIndex + 1);
+        return "Week " + (maxWeekIndex + 1);
     }
 
     public static void main(String[] args) {
         loadData();
-        System.out.println("Data loaded- ready for queries");
+        System.out.println("Data loaded - ready for queries");
     }
 }
